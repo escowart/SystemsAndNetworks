@@ -1,0 +1,34 @@
+Team MuffinButton's 3600fs README:
+
+For our file system, we chose to implement an Inode file system because we
+	believe that we'll learn more by implementing a file system that is closer
+	to one that is actually used in an operating system.
+
+
+Our disk is split into multiple blocks of a uniform size (512KB) at creation
+	with the first block containing the metadata for the drive as a whole.
+The other block types in the disk are:
+
+dnode (Directory Node) - which stores the metadata on a directory and a
+	collection of dirent blocks (and possibly indirect blocks) that each point
+	to the contents of the directory
+
+inode (File inode) - which stores the metadata on a file and an array of
+	pointers to all of the data blocks for the file
+
+dirent (Directory Entry) - which stores the metadata on a single inode or dnode
+	block that is further down the directory tree
+
+indirect (Indirect Node) - which stores a collection of dirent (and possibly
+	other indirect) blocks to allow dnode's to have a much larger dirent
+	storage total
+
+data (Data Block) - which stores actual file data with no file system metadata
+
+free (Free Block) - which stores a pointer to the next free block and a bunch
+	of uninitialized garbage data
+
+
+When a blank partition is created, the first block is a vcb, the second is the
+	root dnode, the third is the root's "." directory dirent, the fourth is the
+	root's ".." directory dirent, and all remaining blocks are free blocks.

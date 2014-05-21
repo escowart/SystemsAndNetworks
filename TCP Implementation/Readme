@@ -1,0 +1,47 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~	Team MuffinButton's 3600tcp README										  ~
+~		Team Members are Cody Wetherby and Edwin Cowart						  ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~																			  ~
+~	Setup:																	  ~
+~	1)	Copy the 3600recv.c, 3600send.c, 3600sendrecv.c, 3600sendrecv.h, run  ~
+~		and Makefile to the desired location	  							  ~
+~	2)	Compile the shell with the included Makefile						  ~
+~	3)	Execute with ./run [--size (small|medium|large|huge)] 				  ~
+~			[--printlog] [--timeout <seconds>] 								  ~
+~			on 3600tcp.ccs.neu.edu  										  ~
+~																			  ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~																			  ~
+~	How to use the Sender and Receiver:										  ~
+~		All input to the sender should be sent through standard-in while	  ~
+~		the receiver writes to standard-out. The sender and receiver also	  ~
+~		create a log of their actions so one can track what they have done.	  ~
+~		To access the log file run the printlog option. The log records the   ~
+~	    sequence numbers of the packets being sent and received, then the 	  ~
+~		receiver's acknowledgement being sent and received.					  ~
+~																			  ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~	What the Sender and Receiver do:										  ~
+~		The sender reads from stdin and put a number of bytes into a packet   ~
+~		with a header. Each packet is assigned a sequence number in the order ~
+~		they occur in the actual data. The sequence number of the next packet ~
+~		will be the sequence number of this packet plus the size of the actual~
+~ 		data not including the header. There is a special type of packet that ~
+~		indicates when an end of file has been reached and no more data is    ~
+~ 		comming. The receiver receives the sender's packets and ensures that  ~
+~		it writes in order of the sequence. It then response with an 		  ~
+~       acknowledgement of the sequence number of the next packet.			  ~
+~		
+~		The sender will also establish a timeout based on the round trip time.~
+~		If a packet times out then that packet will be resent. The sender is  ~
+~		also assigned a window whose capacity may change acording to the 	  ~
+~ 		responses of the reciever. If the reciever is recieving all the 	  ~
+~		packets on time an in order then the window will increase but if drops~
+~		Begin occuring then the window will shrink to its previous size and   ~
+~		increase at with a linear rate (i.e. The derivative is linear). The   ~
+~		window slides inorder to insure that no packets are forgotten about.  ~
+~																			  ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
